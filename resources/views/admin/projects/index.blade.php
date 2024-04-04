@@ -8,7 +8,7 @@
             <tr>
                 <th>Titolo</th>
                 <th>Descrizione</th>
-                {{-- <th>Link</th> --}}
+                <th>Categoria</th>
                 <th>Url Immagine</th>
                 <th></th>
             </tr>
@@ -16,15 +16,15 @@
         <tbody>
             @forelse($projects as $project)
             <tr>
-                <td>{{$project['title']}}</td>
-                <td>{{$project['description']}}</td>
-                {{-- <td><a href="{{$project['link']}}">{{$project['link']}}</a></td> --}}
-                <td class="image-cell"><div><img src="{{$project['imageUrl']}}" alt="" class="image-fluid"></div></td>
+                <td>{{$project->title}}</td>
+                <td>{{$project->description}}</td>
+                <td>{!!$project->category?->getBadge()!!}</td>
+                <td class="image-cell"><div><img src="{{$project->imageUrl}}" alt="" class="image-fluid"></div></td>
                 <td><a href="{{route('admin.projects.show', $project)}}">più dettagli...</a></td>
             </tr>
             @empty
             <tr>
-                <td cell-span="4">Non ci sono progetti</td>
+                <td cell-span="100%">Non ci sono progetti</td>
             </tr>
             @endforelse
         </tbody>

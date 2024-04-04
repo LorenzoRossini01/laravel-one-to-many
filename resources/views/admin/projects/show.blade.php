@@ -6,16 +6,20 @@
 
     <div class="card">
         <div class="card-header">
-            <h2>{{$project['title']}}</h2>
+            <h2>{{$project->title}}</h2>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-6">
-                    <img src="{{$project['imageUrl']}}" alt="" class="image-fluid">
+                    <img src="{{$project->imageUrl}}" alt="" class="image-fluid">
                 </div>
                 <div class="col-6">
-                    <p>{{$project['description']}}</p>                    
-                    <a href="{{$project['link']}}">{{$project['link']}}</a>
+                    <p>{{$project->description}}</p>                    
+                    <a href="{{$project->link}}">{{$project->link}}</a>
+                    <div class="my-2">
+                      <strong>Categoria</strong>
+                      {!!$project->category?->getBadge()!!}
+                    </div>
                 </div>
             </div>
         </div>
