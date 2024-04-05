@@ -18,6 +18,12 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ route('admin.projects.create') }}">Add Project</a>
             </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{{ route('admin.categories.index') }}">Category List</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('admin.categories.create') }}">Add Category</a>
+            </li>
           @endauth
         </ul>
           

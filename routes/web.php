@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Guest\DashboardController as GuestDashboardController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ProjectController;
@@ -31,6 +32,8 @@ Route::middleware('auth')
 
 
     Route::resource('projects',ProjectController::class);
+
+    Route::resource('categories', CategoryController::class);
 
   });
 
