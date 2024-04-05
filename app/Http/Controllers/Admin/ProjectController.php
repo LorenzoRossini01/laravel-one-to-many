@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Category;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 
@@ -20,7 +21,13 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects=Project::orderBy('id', 'desc')->paginate(15);
+        $projects=Project::orderBy('id', 'desc');
+
+        if(Auth::user()->role!='admin'){
+            $projects->where('user_id',Auth::id());
+        }
+
+        $projects=$projects->paginate(15);
 
         return view('admin.projects.index', compact('projects'));
 
@@ -49,6 +56,7 @@ class ProjectController extends Controller
         $data = $request->all();
         $project = new Project;
         $project->fill($data);
+        $project->user_id=Auth::id();
         $project->slug=Str::slug($project->title);
         $project->save();
         return redirect()->route('admin.projects.show', $project);
@@ -62,6 +70,10 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        // controllo utente
+        $autenticated_user_id=Auth::id();
+        if($autenticated_user_id != $project->user_id) abort(403);
+
         return view('admin.projects.show', compact('project'));
     }
 
@@ -73,6 +85,10 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+        // controllo utente
+        $autenticated_user_id=Auth::id();
+        if($autenticated_user_id != $project->user_id) abort(403);
+
         $categories=Category::all();
         return view('admin.projects.editcreate', compact('project','categories'));
     }
@@ -86,9 +102,15 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
+        // controllo utente
+        $autenticated_user_id=Auth::id();
+        if($autenticated_user_id != $project->user_id) abort(403);
+
+
         $request->validated();
         $data=$request->all();
         $project->fill($data);
+        $project->user_id=Auth::id();
         $project->slug=Str::slug($project->title);
         $project->save();
         return redirect()->route('admin.projects.show', $project);
@@ -103,7 +125,12 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        // controllo utente
+        $autenticated_user_id=Auth::id();
+        if($autenticated_user_id != $project->user_id) abort(403);
+
         $project->delete();
         return redirect()->route('admin.projects.index');
+
     }
 }

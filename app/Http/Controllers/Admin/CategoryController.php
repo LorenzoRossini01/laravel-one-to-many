@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -17,6 +18,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        if(Auth::user()->role != 'admin')abort(403);
+
         $categories=Category::orderBy('id', 'desc')->paginate(15);
 
         return view('admin.categories.index', compact('categories'));
@@ -29,6 +32,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        if(Auth::user()->role != 'admin')abort(403);
+
         return view('admin.categories.editcreate');
 
     }
@@ -41,6 +46,8 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
+        if(Auth::user()->role != 'admin')abort(403);
+
         $request->validated();
         $data = $request->all();
         $category = new Category;
@@ -58,7 +65,10 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('admin.categories.show', compact('category'));
+        if(Auth::user()->role != 'admin')abort(403);
+
+        $categories=Category::all();
+        return view('admin.categories.show', compact('category','categories'));
 
     }
 
@@ -70,6 +80,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+        if(Auth::user()->role != 'admin')abort(403);
+
         return view('admin.categories.editcreate', compact('category'));
     }
 
@@ -82,6 +94,8 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
+        if(Auth::user()->role != 'admin')abort(403);
+
         $request->validated();
         $data=$request->all();
         $category->fill($data);
@@ -92,12 +106,30 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request, Category $category)
     {
+        if(Auth::user()->role != 'admin')abort(403);
+
+        $action=$request->input('delete-action');
+
+        if($action==='delete'){
+
+            foreach($category->projects as $project){
+                $project->delete();
+            }
+        } else{
+            foreach($category->projects as $project){
+                $project->category_id=$action;
+                $project->save();
+            }
+            
+        }
+
+
         $category->delete();
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.projects.index');
     }
 }
