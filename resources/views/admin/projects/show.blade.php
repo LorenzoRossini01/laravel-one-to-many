@@ -17,8 +17,12 @@
                     <p>{{$project->description}}</p>                    
                     <a href="{{$project->link}}">{{$project->link}}</a>
                     <div class="my-2">
-                      <strong>Categoria</strong>
-                      {!!$project->category?->getBadge()!!}
+                      <strong>Categoria:</strong>
+                      <a href="{{route('admin.categories.show', $project->category)}}">{!!$project->category->getBadge()!!}</a>
+                    </div>
+                    <div class="my-2">
+                      <strong>Autore: </strong>
+                      {{$project->user->name}}</a>
                     </div>
                 </div>
             </div>

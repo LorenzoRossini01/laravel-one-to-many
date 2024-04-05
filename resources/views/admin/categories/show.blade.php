@@ -32,27 +32,45 @@
   </div>
   <div class="modal fade" id="delete-modal-{{ $category->id }}" tabindex="-1" aria-labelledby="delete-modal-{{ $category->id }}-label"
     aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="delete-modal-{{ $category->id }}-label">Conferma eliminazione</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+    <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="">
+      @method('DELETE')
+      @csrf
+
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="delete-modal-{{ $category->id }}-label">Conferma eliminazione</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-start">
+            Stai eliminando la categoria "{{ $category->label }}". L'operazione non è reversibile
+
+            <p class="mt-2"><strong class="text-danger">Attenzione:</strong> Scegli l'azione da eseguire con i progetti associati alla categoria "{{ $category->label }}"</p>
+            
+            <select name="delete-action" id="" class="form-select ">
+            <option value="delete">Cancella</option>
+            @foreach($categories as $category_options)
+            @if($category_options->id!=$category->id)
+            <option value="{{$category_options->id}}">Associa a {{$category_options->label}}</option>
+            @endif
+            @endforeach
+          </select>
         </div>
-        <div class="modal-body text-start">
-          Sei sicuro di voler eliminare definitivamente la categoria: {{ $category->label }}?
-        </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
 
-          <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="">
-            @method('DELETE')
-            @csrf
 
-            <button type="submit" class="btn btn-danger">Elimina</button>
-          </form>
+
+            <button type="submit" class="btn btn-danger">Conferma modifiche</button>
+          </div>
         </div>
       </div>
-    </div>
+
+    </form>
+
+  </div>
 @endsection
 
 

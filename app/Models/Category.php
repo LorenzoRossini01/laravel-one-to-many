@@ -16,7 +16,7 @@ class Category extends Model
     }
 
     public function getBadge(){
-        return "<span class='badge' style='background-color:{$this->color}'>{$this->label}</span>";
+        return "<span class='badge fs-5' style='background-color:{$this->color}'>{$this->label}</span>";
     }
 }
 

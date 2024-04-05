@@ -6,25 +6,30 @@
     <table class="table table-hover">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Titolo</th>
+                <th>Autore</th>
                 <th>Descrizione</th>
                 <th>Categoria</th>
-                <th>Url Immagine</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @forelse($projects as $project)
             <tr>
+                <td>{{$project->id}}</td>
                 <td>{{$project->title}}</td>
+                <td>{{$project->user->name}}</td>
                 <td>{{$project->description}}</td>
-                <td>{!!$project->category?->getBadge()!!}</td>
-                <td class="image-cell"><div><img src="{{$project->imageUrl}}" alt="" class="image-fluid"></div></td>
+                <td>
+                    @if(@isset($project->category))
+                        <a href="{{route('admin.categories.show', $project->category)}}">{!!$project->category?->getBadge()!!}</a></td>
+                    @endif
                 <td><a href="{{route('admin.projects.show', $project)}}">più dettagli...</a></td>
             </tr>
             @empty
             <tr>
-                <td cell-span="100%">Non ci sono progetti</td>
+                <td colspan="100%">Non ci sono progetti</td>
             </tr>
             @endforelse
         </tbody>

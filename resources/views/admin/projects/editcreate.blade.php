@@ -64,16 +64,23 @@
             </div>
             <div class="col-12 col-lg-6">
                 <div class="card p-2">
-                    <label for="category_id" class="form-label ">Category</label>
-                    <select name="category_id" id="category_id" class="form-select @error('category_id') is-invalid @enderror">
-                        <option value="" class="d-none">Seleziona una categoria</option>
-                        @foreach($categories as $category)
-                            <option value="{{$category->id}}" {{$category->id ==old('category_id',$project->category_id??'')?'selected':''}}>{{$category->label}}</option>
-                        @endforeach
-                    </select>
-                    @error("category_id")
-                    <div class="invalid-feedback">{{$message}}</div>
-                    @enderror
+                    <div class="row g-2">
+                        <div class="col-10">
+                            <label for="category_id" class="form-label ">Category</label>
+                            <select name="category_id" id="category_id" class="form-select @error('category_id') is-invalid @enderror">
+                                <option value="" class="d-none">Seleziona una categoria</option>
+                                @foreach($categories as $category)
+                                <option value="{{$category->id}}" {{$category->id ==old('category_id',$project->category_id??'')?'selected':''}}>{{$category->label}}</option>
+                                @endforeach
+                            </select>
+                            @error("category_id")
+                            <div class="invalid-feedback">{{$message}}</div>
+                            @enderror
+                        </div>
+                        <div class="col-2 align-self-end">
+                            <a href="{{route('admin.categories.create')}}" class="btn btn-secondary w-100">+</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-12">

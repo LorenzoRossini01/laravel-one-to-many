@@ -12,18 +12,33 @@
             <a @class(['nav-link', 'active' => Route::currentRouteName() == 'home']) aria-current="page" href="{{ route('home') }}">Home</a>
           </li>
           @auth
-          <li class="nav-item">
-              <a class="nav-link" href="{{ route('admin.projects.index') }}">Project List</a>
+          <li class="nav-item dropdown">
+            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle text-capitalize" data-bs-toggle="dropdown"
+              href="#" id="projectNavbarDropdown" role="button" v-pre>
+              Project
+            </a>
+
+            <div aria-labelledby="navbarDropdown" class="dropdown-menu dropdown-menu-right">
+              <a class="dropdown-item" href="{{ route('admin.projects.index') }}">Project List</a>
+              <a class="dropdown-item" href="{{ route('admin.projects.create') }}">Add Projecty</a>
+            </div>
+          </li>
+            @if(Auth::user()->role == 'admin')
+
+            <li class="nav-item dropdown">
+              <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle text-capitalize" data-bs-toggle="dropdown"
+                href="#" id="categoryNavbarDropdown" role="button" v-pre>
+                Category
+              </a>
+              
+              <div aria-labelledby="navbarDropdown" class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="{{ route('admin.categories.index') }}">Category List</a>
+                <a class="dropdown-item" href="{{ route('admin.categories.create') }}">Add Category</a>
+              </div>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('admin.projects.create') }}">Add Project</a>
-            </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{{ route('admin.categories.index') }}">Category List</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('admin.categories.create') }}">Add Category</a>
-            </li>
+
+            
+            @endif
           @endauth
         </ul>
           
@@ -38,6 +53,7 @@
               </li>
             @endif
           @else
+
 
             <li class="nav-item dropdown">
               <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle text-capitalize" data-bs-toggle="dropdown"

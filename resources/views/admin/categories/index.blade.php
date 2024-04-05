@@ -6,16 +6,17 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Titolo</th>
-                <th>Descrizione</th>
+                <th>ID</th>
+                <th>Etichetta</th>
+                <th>Codice HEX</th>
                 <th>Categoria</th>
-                <th>Url Immagine</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @forelse($categories as $category)
             <tr>
+                <td>{{$category->id}}</td>
                 <td>{{$category->label}}</td>
                 <td>{{$category->color}}</td>
                 <td>{!!$category->getBadge()!!}</td>
@@ -23,7 +24,7 @@
             </tr>
             @empty
             <tr>
-                <td cell-span="100%">Non ci sono categorie</td>
+                <td colspan="100%">Non ci sono categorie</td>
             </tr>
             @endforelse
         </tbody>
