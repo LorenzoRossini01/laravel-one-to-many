@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,15 +61,16 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
      */
     public function show(Category $category)
     {
         if(Auth::user()->role != 'admin')abort(403);
 
         $categories=Category::all();
-        return view('admin.categories.show', compact('category','categories'));
+        $projects=Project::all()->where('category_id', $category->id);
+        return view('admin.categories.show', compact('category','categories','projects'));
 
     }
 
